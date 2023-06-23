@@ -5,19 +5,37 @@ import SuperButton from "../Button/SuperButton";
 import Input from "../Input/Input";
 
 type SetterProps = {
-    num: number
-    setMaxSetter: (maxSetter: number) => void
-    setMinSetter: (minSetter: number) => void
-    maxSetter: number
-    minSetter: number
-    handleNum: () => void
+    // num: number
+    setMaxCounter: (a: number) => void
+    setMinCounter: (a: number) => void
+    // maxCounter: number
+    // minCounter: number
+    // handleNum: () => void
+    setErrorMessageActivator: (errorMessageActivator: boolean) => void
 }
 
-const Setter: FC<SetterProps> = () => {
+const Setter: FC<SetterProps> = (props) => {
+    let {setMaxCounter, setMinCounter, setErrorMessageActivator} = props;
+    const handleMaxCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
+        setMaxCounter(parseInt(e.currentTarget.value))
+        setErrorMessageActivator(true)
+    }
+
+    const handleMinCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
+        setMinCounter(parseInt(e.currentTarget.value))
+        setErrorMessageActivator(true)
+    }
+
+    const handleCounterSetter = () => {
+        setErrorMessageActivator(false)
+    }
 
     return (
         <div className={s.incrementer}>
-
+            {/*Kogda na4inaju menjatj value, to dolzhno vyska,kivatj soobshenie "please click set" */}
+            <Input callback={handleMaxCounterSetter} name={'Max'}/>
+            <Input callback={handleMinCounterSetter} name={'Min'}/>
+            <SuperButton className={'default'} callback={handleCounterSetter}>Set </SuperButton>
         </div>
     );
 };
