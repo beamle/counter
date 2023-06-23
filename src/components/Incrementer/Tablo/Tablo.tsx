@@ -9,24 +9,22 @@ type FinalStyle = {
 
 type TabloProps = {
     num: number
-    setterIncorrect: boolean
-    className: keyof FinalStyle
+    className?: keyof FinalStyle
 }
 
 
-const Tablo: FC<TabloProps> = ({num, setterIncorrect, className}) => {
+const Tablo: FC<TabloProps> = ({num, className}) => {
     console.log(className)
     const finalStyle = {
-        error: s.setterIncorrect,
         default: s.default,
         red: s.red
     }
 
-    const pFinalClassName = `${s.p} ${finalStyle[className]}`
+    const pFinalClassName = `${s.p}`
 
     return (
         <div className={s.numWrapper}>
-            {setterIncorrect ? <p className={pFinalClassName}>Incorrect value</p> : <p className={pFinalClassName}>{num}</p>}
+            {<p className={pFinalClassName}>{num}</p>}
         </div>
     );
 };
