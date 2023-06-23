@@ -1,0 +1,29 @@
+.button {
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 20px;
+}
+
+/*.button:disabled {*/
+/*    !*cursor: default;*!*/
+/*}*/
+
+/*.button:default {*/
+/*    background-color: #61dafb;*/
+/*}*/
+
+.button .default {
+    background-color: #61dafb;
+    border: 1px solid grey;
+}
+
+.button:active:not(:disabled) {
+    background-color: #3db0d9;
+}
+
+.disabled {
+    color: #fafafa;
+    background-color: #83888c;
+    opacity: 0.5;
+    cursor: default;
+}

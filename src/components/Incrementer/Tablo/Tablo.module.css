@@ -1,0 +1,38 @@
+
+.default {
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+
+.red {
+    color: red;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+
+.numWrapper {
+    border: 2px solid #61dafb;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    padding: 20px;
+    width: 100px;
+    height: 50px;
+}
+
+/*.numWrapper p {*/
+/*    font-size: 30px;*/
+/*    font-weight: 600;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
+
+.setterIncorrect {
+    font-size: 16px;
+    color: red;
+    margin: 0;
+    padding: 0;
+}
