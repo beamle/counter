@@ -1,25 +1,26 @@
 import React, {FC} from 'react';
 import s from "./Tablo.module.css";
 
-type FinalStyle = {
+export type FinalStyle = {
     // error: string
     default: string
-    red: string
+    wrongValue: string
+    disabled: string
 }
 
 type TabloProps = {
-    num: number
+    display: number | string | null
     className: keyof FinalStyle
-    errorMessageActivator: boolean
+
 }
 
 
-const Tablo: FC<TabloProps> = ({num, className, errorMessageActivator}) => {
-    console.log(className)
+const Tablo: FC<TabloProps> = ({display, className}) => {
+
     const finalStyle = {
         default: s.default,
-        red: s.red,
-        error: s.error
+        wrongValue: s.wrongValue,
+        disabled: s.disabled
     }
 
     const pFinalClassName = `${s.p} ${finalStyle[className]}`
@@ -29,7 +30,7 @@ const Tablo: FC<TabloProps> = ({num, className, errorMessageActivator}) => {
 
     return (
         <div className={s.numWrapper}>
-            {<p className={pFinalClassName}>{errorMessageActivator ? "Please click set" : num}</p>}
+            <p className={pFinalClassName}>{display}</p>
         </div>
     );
 };
