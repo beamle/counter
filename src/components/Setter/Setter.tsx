@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import s from "./Setter.module.css";
 import SuperButton from "../Button/SuperButton";
 import Input from "../Input/Input";
@@ -15,10 +15,7 @@ type SetterProps = {
 }
 
 const Setter: FC<SetterProps> = (props) => {
-    // let {setMaxCounter, setMinCounter, setErrorMessageActivator, setCounter, minCounter, maxCounter, setZehrena4evatelj} = props;
-    // let { setErrorMessageActivator, setCounter, setZehrena4evatelj, setBigState, minCounter, maxCounter, setMaxCounter, setMinCounter} = props;
-
-    let { setCounter, maxCounter, minCounter, setMaxCounter, setMinCounter, setTabloMessage } = props;
+    let {setCounter, maxCounter, minCounter, setMaxCounter, setMinCounter, setTabloMessage} = props;
 
     const handleMaxAndMinCounter = () => {
         localStorage.setItem('minCounter', JSON.stringify(minCounter))
@@ -29,20 +26,24 @@ const Setter: FC<SetterProps> = (props) => {
 
     const handleMaxCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
         setMaxCounter(parseInt(e.currentTarget.value))
-        setTabloMessage('Please click Set')
+        // setTabloMessage('Please click Set')
     }
 
     const handleMinCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
         setMinCounter(parseInt(e.currentTarget.value))
-        setTabloMessage('Please click Set')
+        // setTabloMessage('Please click Set')
     }
 
-    console.log(maxCounter, 'maxCounter in Setter')
-    console.log(minCounter, ' mixCounter in Setter')
+    useEffect(() => {
+        if (localStorage.getItem('maxCounter') !== JSON.stringify(maxCounter)) {
+            setTabloMessage('Please click Set')
+        } else if (localStorage.getItem('minCounter') !== JSON.stringify(minCounter)) {
+            setTabloMessage('Please click Set')
+        } else setTabloMessage('')
+    }, [maxCounter, minCounter])
 
     return (
         <div className={s.setter}>
-            {/*Kogda na4inaju menjatj value, to dolzhno vyska,kivatj soobshenie "please click set" */}
             <Input value={maxCounter} callback={handleMaxCounterSetter} name={'Max'}/>
             <Input value={minCounter} callback={handleMinCounterSetter} name={'Min'}/>
             <SuperButton className={'default'}

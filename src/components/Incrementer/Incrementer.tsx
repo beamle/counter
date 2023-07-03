@@ -28,22 +28,19 @@ const Incrementer:FC<IncrementerProps> = (props) => {
     // Стили
     const moreThanMaxCount = (counter === null || counter === maxCounter) ? "disabled" : "default";
     const equalToMInCount = (counter === null || counter === minCounter) ? "disabled" : "default";
-                        // (counter === null || counter === maxCounter) ? "disabled" :
-                        // (counter === null || counter === minCounter) ? "disabled" : "default";
 
     let className: keyof FinalStyle = 'default';
 
 
     // const isDisabled = counter === maxCounter || counter === null || counter === minCounter || counter === 0 // TODO: make separate isDisabled
 
-    console.log(counter, "counter/counter")
     console.log(localStorage.getItem('maxCounter'), "maxCounter in ls")
     console.log(localStorage.getItem("minCounter"), "minCounter in ls")
-    console.log(tabloMessage, "tablomessage")
 
     if (minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || minCounter === maxCounter) {
         setTabloMessage('Wrong value')
-        className =  ((counter !== null && counter >= maxCounter) || minCounter > maxCounter || minCounter === maxCounter || minCounter < 0 || maxCounter < 0 )
+        className =  ((counter !== null && counter >= maxCounter)
+            || minCounter > maxCounter || minCounter === maxCounter || minCounter < 0 || maxCounter < 0 )
             ? "wrongValue"
             : "default"
 
