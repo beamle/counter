@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import React, {ChangeEvent, FC, ReactNode} from 'react';
 import s from "./SuperButton.module.css";
 
 type ClassNameType = {

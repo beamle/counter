@@ -6,12 +6,12 @@ type InputProps = {
     value: number
     name: string
 }
-const Input:FC<InputProps> = ({name,callback, value}) => {
+const Input: FC<InputProps> = ({callback, name, value}) => {
     return (
         <div className={s.inputWrapper}>
             <div className={s.inputWrapper_name}>{name} value</div>
             <div className={s.inputWrapper_input}>
-                <input type={'number'} value={value} onChange={callback}/>
+                <input type={'number'} onChange={callback} value={value}/>
             </div>
         </div>
     );

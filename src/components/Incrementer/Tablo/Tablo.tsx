@@ -1,32 +1,36 @@
 import React, {FC} from 'react';
 import s from "./Tablo.module.css";
 
-type FinalStyle = {
-    error: string
+export type FinalStyle = {
+    // error: string
     default: string
-    red: string
+    wrongValue: string
+    disabled: string
 }
 
 type TabloProps = {
-    num: number
-    setterIncorrect: boolean
+    display: number | string | null
     className: keyof FinalStyle
+
 }
 
 
-const Tablo: FC<TabloProps> = ({num, setterIncorrect, className}) => {
-    console.log(className)
+const Tablo: FC<TabloProps> = ({display, className}) => {
+
     const finalStyle = {
-        error: s.setterIncorrect,
         default: s.default,
-        red: s.red
+        wrongValue: s.wrongValue,
+        disabled: s.disabled
     }
 
     const pFinalClassName = `${s.p} ${finalStyle[className]}`
 
+
+    // tut dolzhen bytj const errorMessage. Esli v Settere pomenjalsja value , to on vyskakivaet
+
     return (
         <div className={s.numWrapper}>
-            {setterIncorrect ? <p className={pFinalClassName}>Incorrect value</p> : <p className={pFinalClassName}>{num}</p>}
+            <p className={pFinalClassName}>{display}</p>
         </div>
     );
 };

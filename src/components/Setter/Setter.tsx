@@ -1,34 +1,55 @@
-import React, {ChangeEvent, FC, useState} from 'react';
-import s from "../Incrementer/incrementer.module.css";
-import Tablo from "../Incrementer/Tablo/Tablo";
+import React, {ChangeEvent, FC, useEffect, useState} from 'react';
+import s from "./Setter.module.css";
 import SuperButton from "../Button/SuperButton";
 import Input from "../Input/Input";
 
 type SetterProps = {
-    num: number
-    setMaxSetter: (maxSetter: number) => void
-    setMinSetter: (minSetter: number) => void
-    maxSetter: number
-    minSetter: number
-    handleNum: () => void
+    // num: number
+    setMaxCounter: (a: number) => void
+    setMinCounter: (a: number) => void
+    maxCounter: number
+    minCounter: number
+    setCounter: (counter: number | null) => void
+    // handleNum: () => void
+    setTabloMessage: (tabloMessage: string) => void
 }
 
-const Setter: FC<SetterProps> =
-    ({num, setMaxSetter, setMinSetter, maxSetter, minSetter, handleNum}) => {
-    const maxSetterHandler = (e:ChangeEvent<HTMLInputElement>) => setMaxSetter(parseInt(e.currentTarget.value))
-    const minSetterHandler = (e:ChangeEvent<HTMLInputElement>) => setMinSetter(parseInt(e.currentTarget.value))
+const Setter: FC<SetterProps> = (props) => {
+    let {setCounter, maxCounter, minCounter, setMaxCounter, setMinCounter, setTabloMessage} = props;
 
-    const setMaxMinSetters = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(e)
+    const handleMaxAndMinCounter = () => {
+        localStorage.setItem('minCounter', JSON.stringify(minCounter))
+        localStorage.setItem('maxCounter', JSON.stringify(maxCounter))
+        setCounter(minCounter)
+        setTabloMessage('')
     }
 
-    const moreThanMaxCount = num === 5 ? "disabled" : "default";
-    const equalToMInCount = num === 0 ? "disabled" : "default";
+    const handleMaxCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
+        setMaxCounter(parseInt(e.currentTarget.value))
+        // setTabloMessage('Please click Set')
+    }
+
+    const handleMinCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
+        setMinCounter(parseInt(e.currentTarget.value))
+        // setTabloMessage('Please click Set')
+    }
+
+    useEffect(() => {
+        if (localStorage.getItem('maxCounter') !== JSON.stringify(maxCounter)) {
+            setTabloMessage('Please click Set')
+        } else if (localStorage.getItem('minCounter') !== JSON.stringify(minCounter)) {
+            setTabloMessage('Please click Set')
+        } else setTabloMessage('')
+    }, [maxCounter, minCounter])
+
     return (
-        <div className={s.incrementer}>
-            <Input callback={maxSetterHandler} value={maxSetter} name={'Max'}/>
-            <Input callback={minSetterHandler} value={minSetter} name={'Min'}/>
-            <SuperButton className={'default'} callback={handleNum}>Set</SuperButton>
+        <div className={s.setter}>
+            <Input value={maxCounter} callback={handleMaxCounterSetter} name={'Max'}/>
+            <Input value={minCounter} callback={handleMinCounterSetter} name={'Min'}/>
+            <SuperButton className={'default'}
+                         callback={handleMaxAndMinCounter}
+                         disabled={minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || maxCounter === minCounter}>
+                Set </SuperButton>
         </div>
     );
 };

@@ -1,28 +1,49 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Incrementer from "./components/Incrementer/Incrementer";
 import Setter from "./components/Setter/Setter";
 
 function App() {
-    const [num, setNum] = useState<number>(0)
+    const [counter, setCounter] = useState<number | null>(null)
+    const [maxCounter, setMaxCounter] = useState(5);
+    const [minCounter, setMinCounter] = useState(0);
+    const [tabloMessage, setTabloMessage] = useState('');
 
-    const [maxSetter, setMaxSetter] = useState<number>(5)
-    const [minSetter, setMinSetter] = useState<number>(0)
-    const [setter, setSetter] = useState<boolean>(false)
-    // na etom urovne nuzhno proveritj num === maxSetter / minSetter ,
-    // chtoby
-    const handleNum = () => setNum(minSetter) // mozhno prosto Setnum prokinutjk v setter v mesto etogo
-    const handleSetter = () => setSetter(true)
+
+    const handleBtnDisabled = () => {
+        let maxCounterLs = JSON.parse(localStorage.getItem('maxCounter') as string)
+        let minCounterLs = JSON.parse(localStorage.getItem('minCounter') as string)
+        let isDisabled = false;
+        if (maxCounter !== Number(maxCounterLs)) {
+            console.log(!isDisabled,'max')
+            return !isDisabled
+        }
+        else if (minCounter !== Number(minCounterLs)) {
+            console.log(!isDisabled,'min')
+            return !isDisabled
+        }
+        return isDisabled
+    }
+
     return (
         <div className="App">
             <div className="App-wrapper">
-                <Setter num={num}
-                        setMaxSetter={setMaxSetter} setMinSetter={setMinSetter}
-                        maxSetter={maxSetter} minSetter={minSetter} handleNum={handleNum}/>
-                <Incrementer setter={setter} num={num} setNum={setNum} minSetter={minSetter} maxSetter={maxSetter}/>
+                <Setter maxCounter={maxCounter} minCounter={minCounter}
+                        setMaxCounter={setMaxCounter} setMinCounter={setMinCounter} setCounter={setCounter}
+                        setTabloMessage={setTabloMessage}
+                />
+                <Incrementer counter={counter} setCounter={setCounter}
+                             maxCounter={maxCounter} minCounter={minCounter}
+                             handleBtnDisabled={handleBtnDisabled}
+                             tabloMessage={tabloMessage}
+                             setTabloMessage={setTabloMessage}
+                             />
             </div>
         </div>
     );
 }
 
 export default App;
+
+// kogda Input menjatetsja: - Please click set -> kogda my menjaem, no eto zna4enie validnoe
+        //                  - Incorrect valu8e -> kogda nizhnie knoipki disabled ot zna4enij v Inpute
