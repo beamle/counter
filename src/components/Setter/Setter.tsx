@@ -2,6 +2,7 @@ import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import s from "./Setter.module.css";
 import SuperButton from "../Button/SuperButton";
 import Input from "../Input/Input";
+import {NavLink} from "react-router-dom";
 
 type SetterProps = {
     // num: number
@@ -46,10 +47,12 @@ const Setter: FC<SetterProps> = (props) => {
         <div className={s.setter}>
             <Input value={maxCounter} callback={handleMaxCounterSetter} name={'Max'}/>
             <Input value={minCounter} callback={handleMinCounterSetter} name={'Min'}/>
-            <SuperButton className={'default'}
-                         callback={handleMaxAndMinCounter}
-                         disabled={minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || maxCounter === minCounter}>
-                Set </SuperButton>
+            <NavLink to={"/"}>
+                <SuperButton className={'default'}
+                             callback={handleMaxAndMinCounter}
+                             disabled={minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || maxCounter === minCounter}>
+                    Set </SuperButton>
+            </NavLink>
         </div>
     );
 };

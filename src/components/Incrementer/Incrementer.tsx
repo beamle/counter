@@ -2,6 +2,7 @@ import React, {FC, useEffect} from 'react';
 import Tablo, {FinalStyle} from "./Tablo/Tablo";
 import s from "./incrementer.module.css";
 import SuperButton from "../Button/SuperButton";
+import {NavLink} from "react-router-dom";
 
 type IncrementerProps = {
     counter: number | null
@@ -58,6 +59,9 @@ const Incrementer:FC<IncrementerProps> = (props) => {
             <SuperButton className={equalToMInCount} callback={clearNum}
                          disabled={ counter === null || counter === minCounter || minCounter > maxCounter || handleBtnDisabled()}>
                 Clear</SuperButton>
+            <NavLink to={"/settings"}>
+            <SuperButton className={'default'} callback={() => {}}>
+                Set</SuperButton></NavLink>
         </div>
     );
 };
