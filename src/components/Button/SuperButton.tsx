@@ -7,9 +7,9 @@ type ClassNameType = {
 }
 
 type SuperButtonProps = {
-    className: keyof ClassNameType
+    className?: keyof ClassNameType
     disabled?: boolean
-    callback: () => void
+    callback?: () => void
     children: ReactNode
 }
 
@@ -20,7 +20,11 @@ const SuperButton:FC<SuperButtonProps> = ({className, callback, disabled, childr
         default: s.button
     }
 
-    const finalClassName = `${s.button} ${style[className]}`
+    let finalClassName = s.button
+    if(className) {
+        finalClassName = `${s.button} ${style[className]}`
+    }
+
 
 
     return (

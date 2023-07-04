@@ -10,7 +10,7 @@ export type FinalStyle = {
 
 type TabloProps = {
     display: number | string | null
-    className: keyof FinalStyle
+    className?: keyof FinalStyle
 
 }
 
@@ -23,7 +23,10 @@ const Tablo: FC<TabloProps> = ({display, className}) => {
         disabled: s.disabled
     }
 
-    const pFinalClassName = `${s.p} ${finalStyle[className]}`
+    let pFinalClassName = s.default;
+    if (className) {
+        pFinalClassName = `${s.p} ${finalStyle[className]}`
+    }
 
 
     // tut dolzhen bytj const errorMessage. Esli v Settere pomenjalsja value , to on vyskakivaet

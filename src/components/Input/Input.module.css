@@ -12,3 +12,11 @@
     padding: 5px;
     margin: 0 10px 15px ;
 }
+
+.default {
+
+}
+
+.error {
+    background-color: palevioletred;
+}
