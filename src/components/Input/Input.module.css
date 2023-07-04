@@ -4,11 +4,27 @@
 
 .inputWrapper_name {
     flex: 1;
+    font-weight: 900;
+    font-size: 24px;
 }
 
-.inputWrapper input {
+.inputWrapper_input {
+    margin: 0 10px 15px;
+    /*& > .error {*/
+    /*      background-color: palevioletred;*/
+    /*  }*/
+}
+
+.error input {
+    background-color: palevioletred;
+}
+
+.default input {
+
+}
+
+input {
     border-radius: 5px;
     text-align: center;
     padding: 5px;
-    margin: 0 10px 15px ;
 }

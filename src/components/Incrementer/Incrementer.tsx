@@ -13,51 +13,55 @@ type IncrementerProps = {
     setTabloMessage: (message: string) => void
 }
 
-const Incrementer:FC<IncrementerProps> = (props) => {
+const Incrementer: FC<IncrementerProps> = (props) => {
     const {counter, setCounter, maxCounter, minCounter, handleBtnDisabled, tabloMessage, setTabloMessage} = props;
 
     const incrementHandler = () => {
-        if(counter !== null) {
-            counter < maxCounter && setCounter(counter+1)
+        if (counter !== null) {
+            counter < maxCounter && setCounter(counter + 1)
         } else {
-            console.log("something is wrong")}
+            console.log("something is wrong")
+        }
     }
-    const clearNum = () => { if(counter) setCounter(minCounter) }
-
+    const clearNum = () => {
+        if (counter) setCounter(minCounter)
+    }
 
     // Стили
     const moreThanMaxCount = (counter === null || counter === maxCounter) ? "disabled" : "default";
     const equalToMInCount = (counter === null || counter === minCounter) ? "disabled" : "default";
 
-    let className: keyof FinalStyle = 'default';
-
-
-    // const isDisabled = counter === maxCounter || counter === null || counter === minCounter || counter === 0 // TODO: make separate isDisabled
-
     console.log(localStorage.getItem('maxCounter'), "maxCounter in ls")
     console.log(localStorage.getItem("minCounter"), "minCounter in ls")
 
+    let className: keyof FinalStyle = 'default';
+
     if (minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || minCounter === maxCounter) {
         setTabloMessage('Wrong value')
-        className =  ((counter !== null && counter >= maxCounter)
-            || minCounter > maxCounter || minCounter === maxCounter || minCounter < 0 || maxCounter < 0 )
+        className = ((counter !== null && counter >= maxCounter)
+            || minCounter > maxCounter || minCounter === maxCounter || minCounter < 0 || maxCounter < 0)
             ? "wrongValue"
             : "default"
 
     }
 
-
+    const incIsDisabled = counter === null || handleBtnDisabled() || counter === maxCounter
+    const clearIsDisabled = counter === null || counter === minCounter || minCounter > maxCounter || handleBtnDisabled()
 
 
     return (
         <div className={s.incrementer}>
-            <Tablo display={tabloMessage || counter} className={className} />
-            <SuperButton className={moreThanMaxCount} callback={incrementHandler}
-                         disabled={ counter === null || handleBtnDisabled() || counter === maxCounter}>
+            <div className={s.incrementerTablo}>
+                <Tablo display={tabloMessage || counter} className={className}></Tablo>
+            </div>
+            <div className={s.incrementerButtons}>
+                <SuperButton className={moreThanMaxCount} callback={incrementHandler}
+                             disabled={incIsDisabled}>
                 Inc</SuperButton>
-            <SuperButton className={equalToMInCount} callback={clearNum}
-                         disabled={ counter === null || counter === minCounter || minCounter > maxCounter || handleBtnDisabled()}>
-                Clear</SuperButton>
+                <SuperButton className={equalToMInCount} callback={clearNum}
+                             disabled={clearIsDisabled}>
+                    Clear</SuperButton>
+            </div>
         </div>
     );
 };

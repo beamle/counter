@@ -1,7 +1,8 @@
 import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import s from "./Setter.module.css";
 import SuperButton from "../Button/SuperButton";
-import Input from "../Input/Input";
+import Input, {ClassNameValues} from "../Input/Input";
+import {isDisabled} from "@testing-library/user-event/dist/utils";
 
 type SetterProps = {
     // num: number
@@ -42,14 +43,23 @@ const Setter: FC<SetterProps> = (props) => {
         } else setTabloMessage('')
     }, [maxCounter, minCounter])
 
+    const isDisabled = minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || maxCounter === minCounter
+
+    /* Styles */
+
+    let className: keyof ClassNameValues = 'default';
+    if (isDisabled) className = 'error';
+
     return (
         <div className={s.setter}>
-            <Input value={maxCounter} callback={handleMaxCounterSetter} name={'Max'}/>
-            <Input value={minCounter} callback={handleMinCounterSetter} name={'Min'}/>
-            <SuperButton className={'default'}
-                         callback={handleMaxAndMinCounter}
-                         disabled={minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || maxCounter === minCounter}>
-                Set </SuperButton>
+            <div className={s.setterInputs}>
+                <Input value={maxCounter} callback={handleMaxCounterSetter} name={'Max'} className={className}/>
+                <Input value={minCounter} callback={handleMinCounterSetter} name={'Min'} className={className}/></div>
+            <div className={s.setterButton}>
+                <SuperButton className={'default'}
+                             callback={handleMaxAndMinCounter}
+                             disabled={isDisabled}>
+                    Set </SuperButton></div>
         </div>
     );
 };

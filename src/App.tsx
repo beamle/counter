@@ -44,6 +44,3 @@ function App() {
 }
 
 export default App;
-
-// kogda Input menjatetsja: - Please click set -> kogda my menjaem, no eto zna4enie validnoe
-        //                  - Incorrect valu8e -> kogda nizhnie knoipki disabled ot zna4enij v Inpute
