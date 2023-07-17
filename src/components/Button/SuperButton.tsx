@@ -1,5 +1,6 @@
 import React, {ChangeEvent, FC, ReactNode} from 'react';
 import s from "./SuperButton.module.css";
+import {Button} from "@mui/material";
 
 type ClassNameType = {
     disabled: string
@@ -13,6 +14,7 @@ type SuperButtonProps = {
     children: ReactNode
 }
 
+
 const SuperButton:FC<SuperButtonProps> = ({className, callback, disabled, children}) => {
 
     const style = {
@@ -24,10 +26,16 @@ const SuperButton:FC<SuperButtonProps> = ({className, callback, disabled, childr
 
 
     return (
-        <button
+        <Button
             className={finalClassName}
+            sx={{"&.Mui-disabled": {background: "#606060", color: "#c0c0c0"},
+                borderRadius: '50px',
+                mr: '5px',
+            }}
             onClick={callback}
-            disabled={disabled}>{children}</button>
+            disabled={disabled}
+            variant={"contained"}
+        >{children}</Button>
     );
 };
 

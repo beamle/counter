@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import s from "./Setter.module.css";
 import SuperButton from "../Button/SuperButton";
-import Input, {ClassNameValues} from "../Input/Input";
+import MyInput, {ClassNameValues} from "../Input/MyInput";
 import {isDisabled} from "@testing-library/user-event/dist/utils";
 
 type SetterProps = {
@@ -53,8 +53,8 @@ const Setter: FC<SetterProps> = (props) => {
     return (
         <div className={s.setter}>
             <div className={s.setterInputs}>
-                <Input value={maxCounter} callback={handleMaxCounterSetter} name={'Max'} className={className}/>
-                <Input value={minCounter} callback={handleMinCounterSetter} name={'Min'} className={className}/></div>
+                <MyInput value={maxCounter} callback={handleMaxCounterSetter} name={'Max'} className={className}/>
+                <MyInput value={minCounter} callback={handleMinCounterSetter} name={'Min'} className={className}/></div>
             <div className={s.setterButton}>
                 <SuperButton className={'default'}
                              callback={handleMaxAndMinCounter}

@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import Tablo, {FinalStyle} from "./Tablo/Tablo";
 import s from "./incrementer.module.css";
 import SuperButton from "../Button/SuperButton";
@@ -12,6 +12,8 @@ type IncrementerProps = {
     tabloMessage: string
     setTabloMessage: (message: string) => void
 }
+
+
 
 const Incrementer: FC<IncrementerProps> = (props) => {
     const {counter, setCounter, maxCounter, minCounter, handleBtnDisabled, tabloMessage, setTabloMessage} = props;
@@ -45,8 +47,8 @@ const Incrementer: FC<IncrementerProps> = (props) => {
 
     }
 
-    const incIsDisabled = counter === null || handleBtnDisabled() || counter === maxCounter
-    const clearIsDisabled = counter === null || counter === minCounter || minCounter > maxCounter || handleBtnDisabled()
+    const incIsDisabled = handleBtnDisabled() || counter === null || counter === maxCounter
+    const clearIsDisabled = handleBtnDisabled() || counter === null || counter === minCounter || minCounter > maxCounter
 
 
     return (

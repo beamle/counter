@@ -1,5 +1,7 @@
 import React, {ChangeEvent, FC} from 'react';
 import s from "./Input.module.css"
+import Input from "@mui/material/Input";
+
 
 export type ClassNameValues = {
     default: string
@@ -12,7 +14,7 @@ type InputProps = {
     name: string
     className: keyof ClassNameValues
 }
-const Input: FC<InputProps> = ({callback, name, value, className}) => {
+const MyInput: FC<InputProps> = ({callback, name, value, className}) => {
 
     const finalClassName = `${s.inputWrapper_input} ${s[className]}`
     console.log(className)
@@ -27,4 +29,4 @@ const Input: FC<InputProps> = ({callback, name, value, className}) => {
     );
 };
 
-export default Input;
+export default MyInput;
