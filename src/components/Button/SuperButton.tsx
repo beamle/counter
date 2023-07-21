@@ -14,20 +14,18 @@ type SuperButtonProps = {
     children: ReactNode
 }
 
+// const style = {
+//     disabled: s.disabled,
+//     default: s.button
+// }
 
 const SuperButton:FC<SuperButtonProps> = ({className, callback, disabled, children}) => {
 
-    const style = {
-        disabled: s.disabled,
-        default: s.button
-    }
-
-    const finalClassName = `${s.button} ${style[className]}`
-
+    // const finalClassName = `${s.button} ${style[className]}` // coz of MUI we don't use it anymore
 
     return (
         <Button
-            className={finalClassName}
+            // className={finalClassName}
             sx={{"&.Mui-disabled": {background: "#606060", color: "#c0c0c0"},
                 borderRadius: '50px',
                 mr: '5px',
