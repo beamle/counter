@@ -23,14 +23,14 @@ const Tablo: FC<TabloProps> = ({display, className}) => {
         disabled: s.disabled
     }
 
-    const pFinalClassName = `${s.p} ${finalStyle[className]}`
-
+    const pFinalClassName = `${display === "Please click Set" ? s.default : finalStyle[className]}`
 
     // tut dolzhen bytj const errorMessage. Esli v Settere pomenjalsja value , to on vyskakivaet
 
     return (
         <div className={s.numWrapper}>
             <p className={pFinalClassName}>{display}</p>
+
         </div>
     );
 };

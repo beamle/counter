@@ -40,6 +40,9 @@ const Incrementer: FC<IncrementerProps> = (props) => {
 
     console.log(localStorage.getItem('maxCounter'), "maxCounter in ls")
     console.log(localStorage.getItem("minCounter"), "minCounter in ls")
+    console.log(minCounter, "minCounter")
+    console.log(maxCounter, "maxCounter")
+    console.log(counter, "counter")
 
     useEffect(() => {
         if (minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || minCounter === maxCounter) {
