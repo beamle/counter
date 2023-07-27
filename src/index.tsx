@@ -4,6 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {ThemeProvider, createTheme, colors} from '@mui/material';
+import {combineReducers, createStore} from "redux";
+import {myLocalStorageReducer} from "./myLocalStorage-reducer";
+import incrementer from "./components/Incrementer/Incrementer";
+import {counterReducer} from "./counter-reducer";
+import {Provider} from 'react-redux';
+import {store} from "./store/store";
 
 const theme = createTheme({
     palette: {
@@ -16,26 +22,14 @@ const theme = createTheme({
     }
 })
 
-
-export type MyLocalStorageType = {
-    _minCounter: number;
-    _maxCounter: number;
-    setMaxCounter(value: number): void;
-    setMinCounter(value: number): void;
-    getMaxCounter(): number;
-    getMinCounter(): number;
-}
-
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <ThemeProvider theme={theme}>
-        <App />
+        <Provider store={store}>
+            <App/>
+        </Provider>
     </ThemeProvider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

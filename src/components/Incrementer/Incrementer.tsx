@@ -4,30 +4,35 @@ import s from "./incrementer.module.css";
 import SuperButton from "../Button/SuperButton";
 import {changeCounterAC, CounterReducerActionsType} from "../../counter-reducer";
 import {WRONG_VALUE} from "./Tablo/tablo-messages/tablo-messages";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "../../store/store";
+import {MyStorageType} from "../../App";
 
 type IncrementerProps = {
-    counter: number | null
-    maxCounter: number
-    minCounter: number
     handleBtnDisabled: () => boolean
     tabloMessage: string
     setTabloMessage: (message: string) => void
-    dispatchToMyStorage: (Action: CounterReducerActionsType) => void
 }
 
 
 const Incrementer: FC<IncrementerProps> = (props) => {
-    const {counter, maxCounter, minCounter, handleBtnDisabled, tabloMessage, setTabloMessage} = props;
+    const {handleBtnDisabled, tabloMessage, setTabloMessage} = props;
+    const dispatch = useDispatch();
+    const myStorage = useSelector<AppRootState, MyStorageType>(state => state.myStorage)
+        // useSelector prinimaet 1 callback funkctiju, callback vozvbrashaet zna4enie, eto zna4nie sohranaetsa v myStorage
+        // 1 tip - tip otkuda izvlekaem, to estj state, t.k state formiruetsa na osnove rootReducers.
+        // 2 tip - to, 4to vernetsa iz callback
+    const {counter, maxCounter, minCounter} = myStorage
 
     const incrementHandler = () => {
         if (counter !== null) {
-            counter < maxCounter && props.dispatchToMyStorage(changeCounterAC(counter + 1))
+            counter < maxCounter && dispatch(changeCounterAC(counter + 1))
         } else {
             console.log("something is wrong")
         }
     }
     const clearNum = () => {
-        if (counter) props.dispatchToMyStorage(changeCounterAC(minCounter))
+        if (counter) dispatch(changeCounterAC(minCounter))
     }
 
     /* Handle btn disable **/

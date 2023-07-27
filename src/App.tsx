@@ -2,7 +2,7 @@ import React, {useEffect, useReducer, useState} from 'react';
 import './App.css';
 import Incrementer from "./components/Incrementer/Incrementer";
 import Setter from "./components/Setter/Setter";
-import {setterReducer} from "./components/Setter/setter-reducer";
+import {myLocalStorageReducer} from "./myLocalStorage-reducer";
 import {counterReducer} from "./counter-reducer";
 import {TabloMessagesType} from "./components/Incrementer/Tablo/tablo-messages/tablo-messages";
 // import {counterReducer} from "./counter-reducer";
@@ -23,7 +23,7 @@ export type MyStorageType = {
 function App() {
     const [tabloMessage, setTabloMessage] = useState('');
 
-    const [ myLocalStorage, dispatchToLocalStorage] = useReducer(setterReducer, {
+    const [ myLocalStorage, dispatchToLocalStorage] = useReducer(myLocalStorageReducer, {
         _minCounterLS: 0,
         _maxCounterLS: 0
     })
@@ -75,16 +75,11 @@ function App() {
             <div className="App-wrapper">
                 <Setter maxCounter={myStorage.maxCounter} minCounter={myStorage.minCounter}
                         setTabloMessage={setTabloMessage}
-                        dispatchToLocalStorage={dispatchToLocalStorage}
                         myLocalStorage={myLocalStorage}
-                        dispatchToMyStorage={dispatchToMyStorage}
                 />
-                <Incrementer counter={myStorage.counter}
-                             maxCounter={myStorage.maxCounter} minCounter={myStorage.minCounter}
-                             handleBtnDisabled={handleBtnDisabled}
+                <Incrementer handleBtnDisabled={handleBtnDisabled}
                              tabloMessage={tabloMessage}
                              setTabloMessage={setTabloMessage}
-                             dispatchToMyStorage={dispatchToMyStorage}
                 />
             </div>
         </div>

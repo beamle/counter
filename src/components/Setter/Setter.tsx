@@ -8,34 +8,35 @@ import {
     changeMinCounterAC,
     counterReducer, CounterReducerActionsType
 } from "../../counter-reducer";
-import {setMinMaxToLocalStorageAC, SetterReducerActionsType} from "./setter-reducer";
+import {setMinMaxToLocalStorageAC, SetterReducerActionsType} from "../../myLocalStorage-reducer";
 import {EMPTY, PLEASE_CLICK_SET} from "../Incrementer/Tablo/tablo-messages/tablo-messages";
+import {useDispatch} from "react-redux";
 
 type SetterProps = {
     maxCounter: number
     minCounter: number
     setTabloMessage: (tabloMessage: string) => void
-    dispatchToLocalStorage: (action: SetterReducerActionsType) => void
+    // dispatchToLocalStorage: (action: SetterReducerActionsType) => void
     myLocalStorage: {[key: string]: number}
-    dispatchToMyStorage: (action: CounterReducerActionsType) => void
 }
 
 const Setter: FC<SetterProps> = (props) => {
     let {maxCounter, minCounter, setTabloMessage, myLocalStorage} = props;
+    const dispatch = useDispatch();
 
     const handleMaxAndMinCounter = () => {
         // SET btn sets new max/min values to myLocalStorage
-        props.dispatchToLocalStorage(setMinMaxToLocalStorageAC(minCounter, maxCounter));
-        props.dispatchToMyStorage(changeCounterAC(minCounter))
+        dispatch(setMinMaxToLocalStorageAC(minCounter, maxCounter));
+        dispatch(changeCounterAC(minCounter))
         setTabloMessage(EMPTY)
     }
 
     const handleMaxCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
-        props.dispatchToMyStorage(changeMaxCounterAC(parseInt(e.currentTarget.value)))
+        dispatch(changeMaxCounterAC(parseInt(e.currentTarget.value)))
     }
 
     const handleMinCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
-        props.dispatchToMyStorage(changeMinCounterAC(parseInt(e.currentTarget.value)))
+        dispatch(changeMinCounterAC(parseInt(e.currentTarget.value)))
     }
 
     useEffect(() => {

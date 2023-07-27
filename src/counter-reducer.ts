@@ -3,9 +3,17 @@ import {MyStorageType} from "./App";
 type ChangeMaxCounterAT = ReturnType<typeof changeMaxCounterAC>
 type ChangeMinCounterAT = ReturnType<typeof changeMinCounterAC>
 type ChangeCounterAT = ReturnType<typeof changeCounterAC>
+
 export type CounterReducerActionsType = ChangeMaxCounterAT | ChangeMinCounterAT | ChangeCounterAT
 
-export const counterReducer = (state: MyStorageType, action: CounterReducerActionsType) => {
+const initialState: MyStorageType = {
+    counter: 0,
+    maxCounter: 5,
+    minCounter: 0,
+    tabloMessage: ''
+}
+
+export const counterReducer = (state: MyStorageType = initialState, action: CounterReducerActionsType): MyStorageType => {
     switch (action.type) {
         case "CHANGE-COUNTER":
             return {...state, counter: action.counter}
