@@ -1,25 +1,70 @@
-import React, {useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import './App.css';
 import Incrementer from "./components/Incrementer/Incrementer";
 import Setter from "./components/Setter/Setter";
+import {setterReducer} from "./components/Setter/setter-reducer";
+import {counterReducer} from "./counter-reducer";
+import {TabloMessagesType} from "./components/Incrementer/Tablo/tablo-messages/tablo-messages";
+// import {counterReducer} from "./counter-reducer";
+
+
+export type MyLStorageType = {
+    _minCounterLS: number,
+    _maxCounterLS: number
+}
+
+export type MyStorageType = {
+    counter: number,
+    maxCounter: number,
+    minCounter: number
+    tabloMessage: TabloMessagesType
+}
 
 function App() {
-    const [counter, setCounter] = useState<number | null>(null)
-    const [maxCounter, setMaxCounter] = useState(5);
-    const [minCounter, setMinCounter] = useState(0);
     const [tabloMessage, setTabloMessage] = useState('');
 
+    const [ myLocalStorage, dispatchToLocalStorage] = useReducer(setterReducer, {
+        _minCounterLS: 0,
+        _maxCounterLS: 0
+    })
+
+    const [ myStorage, dispatchToMyStorage ] = useReducer(counterReducer, {
+        counter: 0,
+        maxCounter: 5,
+        minCounter: 0,
+        tabloMessage: ''
+    })
+
+    console.log(myLocalStorage)
+
+    // const myLocalStorage: MyLocalStorageType = {
+    //     _minCounterLS: 0,
+    //     _maxCounterLS: 0,
+    //     setMaxCounter(value: number) {
+    //         // debugger
+    //         this._maxCounterLS = value
+    //         console.log(this._maxCounterLS, 'here max')
+    //     },
+    //     setMinCounter(value: number) {
+    //         this._minCounterLS = value
+    //         console.log(this._minCounterLS, 'here min')
+    //     },
+    //     getMaxCounter() {
+    //         console.log(myLocalStorage._minCounterLS, 'inlocalstorage')
+    //         return this._minCounterLS
+    //     },
+    //     getMinCounter() {
+    //         return this._maxCounterLS
+    //     }
+    // }
 
     const handleBtnDisabled = () => {
-        let maxCounterLs = JSON.parse(localStorage.getItem('maxCounter') as string)
-        let minCounterLs = JSON.parse(localStorage.getItem('minCounter') as string)
+        // Check if min/maxCounter in myLocalStorage is changed -> disable btn if did
+        // At the same time Setter changes tabloMessage to "Please click Set"
         let isDisabled = false;
-        if (maxCounter !== Number(maxCounterLs)) {
-            console.log(!isDisabled,'max')
+        if (myStorage.maxCounter !== Number(myLocalStorage._maxCounterLS)) {
             return !isDisabled
-        }
-        else if (minCounter !== Number(minCounterLs)) {
-            console.log(!isDisabled,'min')
+        } else if (myStorage.minCounter !== Number(myLocalStorage._minCounterLS)) {
             return !isDisabled
         }
         return isDisabled
@@ -28,16 +73,19 @@ function App() {
     return (
         <div className="App">
             <div className="App-wrapper">
-                <Setter maxCounter={maxCounter} minCounter={minCounter}
-                        setMaxCounter={setMaxCounter} setMinCounter={setMinCounter} setCounter={setCounter}
+                <Setter maxCounter={myStorage.maxCounter} minCounter={myStorage.minCounter}
                         setTabloMessage={setTabloMessage}
+                        dispatchToLocalStorage={dispatchToLocalStorage}
+                        myLocalStorage={myLocalStorage}
+                        dispatchToMyStorage={dispatchToMyStorage}
                 />
-                <Incrementer counter={counter} setCounter={setCounter}
-                             maxCounter={maxCounter} minCounter={minCounter}
+                <Incrementer counter={myStorage.counter}
+                             maxCounter={myStorage.maxCounter} minCounter={myStorage.minCounter}
                              handleBtnDisabled={handleBtnDisabled}
                              tabloMessage={tabloMessage}
                              setTabloMessage={setTabloMessage}
-                             />
+                             dispatchToMyStorage={dispatchToMyStorage}
+                />
             </div>
         </div>
     );

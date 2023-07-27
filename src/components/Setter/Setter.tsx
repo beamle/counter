@@ -2,53 +2,54 @@ import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import s from "./Setter.module.css";
 import SuperButton from "../Button/SuperButton";
 import MyInput, {ClassNameValues} from "../Input/MyInput";
-import {isDisabled} from "@testing-library/user-event/dist/utils";
+import {
+    changeCounterAC,
+    changeMaxCounterAC,
+    changeMinCounterAC,
+    counterReducer, CounterReducerActionsType
+} from "../../counter-reducer";
+import {setMinMaxToLocalStorageAC, SetterReducerActionsType} from "./setter-reducer";
+import {EMPTY, PLEASE_CLICK_SET} from "../Incrementer/Tablo/tablo-messages/tablo-messages";
 
 type SetterProps = {
-    // num: number
-    setMaxCounter: (a: number) => void
-    setMinCounter: (a: number) => void
     maxCounter: number
     minCounter: number
-    setCounter: (counter: number | null) => void
-    // handleNum: () => void
     setTabloMessage: (tabloMessage: string) => void
+    dispatchToLocalStorage: (action: SetterReducerActionsType) => void
+    myLocalStorage: {[key: string]: number}
+    dispatchToMyStorage: (action: CounterReducerActionsType) => void
 }
 
 const Setter: FC<SetterProps> = (props) => {
-    let {setCounter, maxCounter, minCounter, setMaxCounter, setMinCounter, setTabloMessage} = props;
+    let {maxCounter, minCounter, setTabloMessage, myLocalStorage} = props;
 
     const handleMaxAndMinCounter = () => {
-        localStorage.setItem('minCounter', JSON.stringify(minCounter))
-        localStorage.setItem('maxCounter', JSON.stringify(maxCounter))
-        setCounter(minCounter)
-        setTabloMessage('')
+        // SET btn sets new max/min values to myLocalStorage
+        props.dispatchToLocalStorage(setMinMaxToLocalStorageAC(minCounter, maxCounter));
+        props.dispatchToMyStorage(changeCounterAC(minCounter))
+        setTabloMessage(EMPTY)
     }
 
     const handleMaxCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
-        setMaxCounter(parseInt(e.currentTarget.value))
-        // setTabloMessage('Please click Set')
+        props.dispatchToMyStorage(changeMaxCounterAC(parseInt(e.currentTarget.value)))
     }
 
     const handleMinCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
-        setMinCounter(parseInt(e.currentTarget.value))
-        // setTabloMessage('Please click Set')
+        props.dispatchToMyStorage(changeMinCounterAC(parseInt(e.currentTarget.value)))
     }
 
     useEffect(() => {
-        if (localStorage.getItem('maxCounter') !== JSON.stringify(maxCounter)) {
-            setTabloMessage('Please click Set')
-        } else if (localStorage.getItem('minCounter') !== JSON.stringify(minCounter)) {
-            setTabloMessage('Please click Set')
+        if (myLocalStorage['_maxCounter'] !== maxCounter) {
+            setTabloMessage(PLEASE_CLICK_SET)
+        } else if (myLocalStorage['_minCounter'] !== minCounter) {
+            setTabloMessage(PLEASE_CLICK_SET)
         } else setTabloMessage('')
     }, [maxCounter, minCounter])
 
     const isDisabled = minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || maxCounter === minCounter
 
     /* Styles */
-
-    let className: keyof ClassNameValues = 'default';
-    if (isDisabled) className = 'error';
+    let className: keyof ClassNameValues = isDisabled ? 'error' : 'default';
 
     return (
         <div className={s.setter}>
@@ -56,9 +57,7 @@ const Setter: FC<SetterProps> = (props) => {
                 <MyInput value={maxCounter} callback={handleMaxCounterSetter} name={'Max'} className={className}/>
                 <MyInput value={minCounter} callback={handleMinCounterSetter} name={'Min'} className={className}/></div>
             <div className={s.setterButton}>
-                <SuperButton className={'default'}
-                             callback={handleMaxAndMinCounter}
-                             disabled={isDisabled}>
+                <SuperButton callback={handleMaxAndMinCounter} disabled={isDisabled}>
                     Set </SuperButton></div>
         </div>
     );

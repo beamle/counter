@@ -16,12 +16,22 @@ const theme = createTheme({
     }
 })
 
+
+export type MyLocalStorageType = {
+    _minCounter: number;
+    _maxCounter: number;
+    setMaxCounter(value: number): void;
+    setMinCounter(value: number): void;
+    getMaxCounter(): number;
+    getMinCounter(): number;
+}
+
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <ThemeProvider theme={theme}>
-        <App/>
+        <App />
     </ThemeProvider>
 );
 

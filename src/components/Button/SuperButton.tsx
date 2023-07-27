@@ -8,7 +8,6 @@ type ClassNameType = {
 }
 
 type SuperButtonProps = {
-    className: keyof ClassNameType
     disabled?: boolean
     callback: () => void
     children: ReactNode
@@ -19,7 +18,7 @@ type SuperButtonProps = {
 //     default: s.button
 // }
 
-const SuperButton:FC<SuperButtonProps> = ({className, callback, disabled, children}) => {
+const SuperButton:FC<SuperButtonProps> = ({callback, disabled, children}) => {
 
     // const finalClassName = `${s.button} ${style[className]}` // coz of MUI we don't use it anymore
 
