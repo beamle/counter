@@ -35,4 +35,5 @@ const Tablo: FC<TabloProps> = ({display, className}) => {
     );
 };
 
-export default Tablo;
+const TabloMemoized = React.memo(Tablo)
+export default TabloMemoized

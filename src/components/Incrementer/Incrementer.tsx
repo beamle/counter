@@ -1,38 +1,48 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useCallback, useEffect} from 'react';
 import Tablo, {FinalStyle} from "./Tablo/Tablo";
 import s from "./incrementer.module.css";
 import SuperButton from "../Button/SuperButton";
-import {changeCounterAC, CounterReducerActionsType} from "../../counter-reducer";
+import {changeCounterAC, changeMessageAC, MyStorageType} from "../../counter-reducer";
 import {WRONG_VALUE} from "./Tablo/tablo-messages/tablo-messages";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "../../store/store";
-import {MyStorageType} from "../../App";
-
-type IncrementerProps = {
-    handleBtnDisabled: () => boolean
-    tabloMessage: string
-    setTabloMessage: (message: string) => void
-}
+import {MyLStorageType} from "../../myLocalStorage-reducer";
+import SuperButtonMemoized from "../Button/SuperButton";
+import TabloMemoized from "./Tablo/Tablo";
 
 
-const Incrementer: FC<IncrementerProps> = (props) => {
-    const {handleBtnDisabled, tabloMessage, setTabloMessage} = props;
+const Incrementer: FC = (props) => {
     const dispatch = useDispatch();
     const myStorage = useSelector<AppRootState, MyStorageType>(state => state.myStorage)
         // useSelector prinimaet 1 callback funkctiju, callback vozvbrashaet zna4enie, eto zna4nie sohranaetsa v myStorage
         // 1 tip - tip otkuda izvlekaem, to estj state, t.k state formiruetsa na osnove rootReducers.
         // 2 tip - to, 4to vernetsa iz callback
-    const {counter, maxCounter, minCounter} = myStorage
+    const {counter, maxCounter, minCounter, tabloMessage} = myStorage
+    const myLStorage = useSelector<AppRootState, MyLStorageType>(state => state.myLocalStorage)
+    const {_minCounterLS, _maxCounterLS} = myLStorage
 
-    const incrementHandler = () => {
+    const incrementHandler = useCallback( () => {
         if (counter !== null) {
             counter < maxCounter && dispatch(changeCounterAC(counter + 1))
         } else {
             console.log("something is wrong")
         }
-    }
-    const clearNum = () => {
+    },[])
+
+    const clearNum = useCallback(() => {
         if (counter) dispatch(changeCounterAC(minCounter))
+    }, [])
+
+    const handleBtnDisabled = () => {
+        // Check if min/maxCounter in myLocalStorage is changed -> disable btn if did
+        // At the same time Setter changes tabloMessage to "Please click Set"
+        let isDisabled = false;
+        if (maxCounter !== _maxCounterLS) {
+            return !isDisabled
+        } else if (minCounter !== _minCounterLS) {
+            return !isDisabled
+        }
+        return isDisabled
     }
 
     /* Handle btn disable **/
@@ -45,7 +55,7 @@ const Incrementer: FC<IncrementerProps> = (props) => {
 
     useEffect(() => {
         if (minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || minCounter === maxCounter) {
-            setTabloMessage(WRONG_VALUE)
+            dispatch(changeMessageAC(WRONG_VALUE))
         }
     }, [minCounter, maxCounter])
 
@@ -54,13 +64,13 @@ const Incrementer: FC<IncrementerProps> = (props) => {
     return (
         <div className={s.incrementer}>
             <div className={s.incrementerTablo}>
-                <Tablo display={tabloMessage || counter} className={className}></Tablo>
+                <TabloMemoized display={tabloMessage || counter} className={className}></TabloMemoized>
             </div>
             <div className={s.incrementerButtons}>
-                <SuperButton callback={incrementHandler} disabled={incIsDisabled}>
-                    Inc</SuperButton>
-                <SuperButton callback={clearNum} disabled={clearIsDisabled}>
-                    Clear</SuperButton>
+                <SuperButtonMemoized callback={incrementHandler} disabled={incIsDisabled}>
+                    Inc</SuperButtonMemoized>
+                <SuperButtonMemoized callback={clearNum} disabled={clearIsDisabled}>
+                    Clear</SuperButtonMemoized>
             </div>
         </div>
     );

@@ -1,5 +1,3 @@
-import {MyLStorageType} from "./App";
-
 type SetMinMaxToLocalStorageAT = ReturnType<typeof setMinMaxToLocalStorageAC>
 
 export type SetterReducerActionsType = SetMinMaxToLocalStorageAT
@@ -7,6 +5,11 @@ export type SetterReducerActionsType = SetMinMaxToLocalStorageAT
 const initialState: MyLStorageType = {
     _minCounterLS: 0,
     _maxCounterLS: 0
+}
+
+export type MyLStorageType = {
+    _minCounterLS: number,
+    _maxCounterLS: number
 }
 
 export const myLocalStorageReducer = (state: MyLStorageType = initialState , action: SetterReducerActionsType) => {

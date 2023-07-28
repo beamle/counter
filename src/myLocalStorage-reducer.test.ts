@@ -1,6 +1,3 @@
-import { render, fireEvent } from '@testing-library/react';
-import {useState} from "react";
-import {MyLStorageType} from "./App";
 import {myLocalStorageReducer} from "./myLocalStorage-reducer";
 
 test("myLocalStorage min/max counters should be changed", () => {

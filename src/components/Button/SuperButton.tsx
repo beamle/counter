@@ -36,4 +36,5 @@ const SuperButton:FC<SuperButtonProps> = ({callback, disabled, children}) => {
     );
 };
 
-export default SuperButton;
+const SuperButtonMemoized = React.memo(SuperButton)
+export default SuperButtonMemoized

@@ -1,50 +1,49 @@
-import React, {ChangeEvent, FC, useEffect, useState} from 'react';
+import React, {ChangeEvent, FC, useCallback, useEffect} from 'react';
 import s from "./Setter.module.css";
 import SuperButton from "../Button/SuperButton";
 import MyInput, {ClassNameValues} from "../Input/MyInput";
 import {
     changeCounterAC,
     changeMaxCounterAC,
+    changeMessageAC,
     changeMinCounterAC,
-    counterReducer, CounterReducerActionsType
+    MyStorageType,
 } from "../../counter-reducer";
-import {setMinMaxToLocalStorageAC, SetterReducerActionsType} from "../../myLocalStorage-reducer";
+import {MyLStorageType, setMinMaxToLocalStorageAC} from "../../myLocalStorage-reducer";
 import {EMPTY, PLEASE_CLICK_SET} from "../Incrementer/Tablo/tablo-messages/tablo-messages";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "../../store/store";
+import MyInputMemoized from "../Input/MyInput";
+import SuperButtonMemoized from "../Button/SuperButton";
 
-type SetterProps = {
-    maxCounter: number
-    minCounter: number
-    setTabloMessage: (tabloMessage: string) => void
-    // dispatchToLocalStorage: (action: SetterReducerActionsType) => void
-    myLocalStorage: {[key: string]: number}
-}
-
-const Setter: FC<SetterProps> = (props) => {
-    let {maxCounter, minCounter, setTabloMessage, myLocalStorage} = props;
+const Setter: FC = () => {
     const dispatch = useDispatch();
+    const myLocalStorage = useSelector<AppRootState, MyLStorageType>(state => state.myLocalStorage)
+    const {_minCounterLS, _maxCounterLS} = myLocalStorage;
+    const myStorage = useSelector<AppRootState, MyStorageType>(state => state.myStorage)
+    const {maxCounter, minCounter} = myStorage
 
-    const handleMaxAndMinCounter = () => {
+    const handleMaxAndMinCounter = useCallback(() => {
         // SET btn sets new max/min values to myLocalStorage
         dispatch(setMinMaxToLocalStorageAC(minCounter, maxCounter));
         dispatch(changeCounterAC(minCounter))
-        setTabloMessage(EMPTY)
-    }
+        dispatch(changeMessageAC(EMPTY))
+    },[])
 
-    const handleMaxCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleMaxCounterSetter = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         dispatch(changeMaxCounterAC(parseInt(e.currentTarget.value)))
-    }
+    },[])
 
-    const handleMinCounterSetter = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleMinCounterSetter = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         dispatch(changeMinCounterAC(parseInt(e.currentTarget.value)))
-    }
+    }, [])
 
     useEffect(() => {
-        if (myLocalStorage['_maxCounter'] !== maxCounter) {
-            setTabloMessage(PLEASE_CLICK_SET)
-        } else if (myLocalStorage['_minCounter'] !== minCounter) {
-            setTabloMessage(PLEASE_CLICK_SET)
-        } else setTabloMessage('')
+        if (_maxCounterLS !== maxCounter) {
+            dispatch(changeMessageAC(PLEASE_CLICK_SET))
+        } else if (_minCounterLS !== minCounter) {
+            dispatch(changeMessageAC(PLEASE_CLICK_SET))
+        } else dispatch(changeMessageAC(EMPTY))
     }, [maxCounter, minCounter])
 
     const isDisabled = minCounter < 0 || maxCounter < 0 || minCounter > maxCounter || maxCounter === minCounter
@@ -52,14 +51,16 @@ const Setter: FC<SetterProps> = (props) => {
     /* Styles */
     let className: keyof ClassNameValues = isDisabled ? 'error' : 'default';
 
+
     return (
         <div className={s.setter}>
             <div className={s.setterInputs}>
-                <MyInput value={maxCounter} callback={handleMaxCounterSetter} name={'Max'} className={className}/>
-                <MyInput value={minCounter} callback={handleMinCounterSetter} name={'Min'} className={className}/></div>
+                <MyInputMemoized value={maxCounter} callback={handleMaxCounterSetter} name={'Max'} className={className}/>
+                <MyInputMemoized value={minCounter} callback={handleMinCounterSetter} name={'Min'} className={className}/>
+            </div>
             <div className={s.setterButton}>
-                <SuperButton callback={handleMaxAndMinCounter} disabled={isDisabled}>
-                    Set </SuperButton></div>
+                <SuperButtonMemoized callback={handleMaxAndMinCounter} disabled={isDisabled}>
+                    Set </SuperButtonMemoized></div>
         </div>
     );
 };

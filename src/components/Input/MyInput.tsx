@@ -29,4 +29,6 @@ const MyInput: FC<InputProps> = ({callback, name, value, className}) => {
     );
 };
 
-export default MyInput;
+
+const MyInputMemoized = React.memo(MyInput)
+export default MyInputMemoized
